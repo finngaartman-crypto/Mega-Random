@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>Mega Random Generator</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: linear-gradient(135deg, #1e1e1e, #000);
+      color: #fff;
+      text-align: center;
+      padding: 40px;
+    }
+
+    h1 { margin-bottom: 20px; }
+
+    .box {
+      background: #111;
+      padding: 25px;
+      margin: 20px auto;
+      border-radius: 15px;
+      width: 400px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.1);
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      background: #ff4b4b;
+      color: #fff;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+
+    button:hover { background: #ff6b6b; }
+
+    .result {
+      margin-top: 15px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .dice {
+      font-size: 60px;
+      margin: 10px;
+      display: inline-block;
+    }
+
+    #wheel {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      border: 8px solid #fff;
+      margin: 20px auto;
+      background: conic-gradient(
+        #ff4b4b 0deg 60deg,
+        #4bff4b 60deg 120deg,
+        #4b4bff 120deg 180deg,
+        #ffff4b 180deg 240deg,
+        #ff4bff 240deg 300deg,
+        #4bffff 300deg 360deg
+      );
+      transition: transform 3s ease-out;
+    }
+
+    #pointer {
+      width: 0;
+      height: 0;
+      border-left: 15px solid transparent;
+      border-right: 15px solid transparent;
+      border-bottom: 25px solid #fff;
+      margin: 0 auto;
+    }
+
+    input, textarea {
+      width: 90%;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      margin-top: 10px;
+      font-size: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Mega Random Generator</h1>
+
+  <!-- DOBBELSTEEN -->
+  <div class="box">
+    <h2>Dobbelsteen</h2>
+    <div id="dice1" class="dice">🎲</div>
+    <button onclick="rollOne()">Gooi</button>
+    <div class="result" id="res1"></div>
+  </div>
+
+  <!-- TWEE DOBBELSTENEN -->
+  <div class="box">
+    <h2>2 Dobbelstenen</h2>
+    <div id="dice2a" class="dice">🎲</div>
+    <div id="dice2b" class="dice">🎲</div>
+    <button onclick="rollTwo()">Gooi</button>
+    <div class="result" id="res2"></div>
+  </div>
+
+  <!-- 6 DOBBELSTENEN -->
+  <div class="box">
+    <h2>6 Dobbelstenen</h2>
+    <div id="dice6"></div>
+    <button onclick="rollSix()">Gooi</button>
+    <div class="result" id="res6"></div>
+  </div>
+
+  <!-- RAD -->
+  <div class="box">
+    <h2>Draai het Rad</h2>
+    <div id="pointer"></div>
+    <div id="wheel"></div>
+    <button onclick="spinWheel()">Draai</button>
+    <div class="result" id="wheelResult"></div>
+  </div>
+
+  <!-- MUNTJE -->
+  <div class="box">
+    <h2>Muntje</h2>
+    <button onclick="flipCoin()">Gooi munt</button>
+    <div class="result" id="coinResult"></div>
+  </div>
+
+  <!-- KAART -->
+  <div class="box">
+    <h2>Speelkaart trekken</h2>
+    <button onclick="drawCard()">Trek kaart</button>
+    <div class="result" id="cardResult"></div>
+  </div>
+
+  <!-- RANDOM KLEUR -->
+  <div class="box">
+    <h2>Random kleur</h2>
+    <button onclick="randomColor()">Kies kleur</button>
+    <div class="result" id="colorResult"></div>
+  </div>
+
+  <!-- RANDOM NUMMER -->
+  <div class="box">
+    <h2>Random nummer (1–100)</h2>
+    <button onclick="randomNumber()">Kies nummer</button>
+    <div class="result" id="numResult"></div>
+  </div>
+
+  <!-- RANDOM NUMMER BEREIK -->
+  <div class="box">
+    <h2>Random nummer binnen bereik</h2>
+    <input id="min" type="number" placeholder="Min">
+    <input id="max" type="number" placeholder="Max">
+    <button onclick="randomRange()">Kies</button>
+    <div class="result" id="rangeResult"></div>
+  </div>
+
+  <!-- RANDOM WOORD -->
+  <div class="box">
+    <h2>Random woord</h2>
+    <button onclick="randomWord()">Kies woord</button>
+    <div class="result" id="wordResult"></div>
+  </div>
+
+  <!-- RANDOM EMOJI -->
+  <div class="box">
+    <h2>Random emoji</h2>
+    <button onclick="randomEmoji()">Kies emoji</button>
+    <div class="result" id="emojiResult"></div>
+  </div>
+
+  <!-- EIGEN KEUZES -->
+  <div class="box">
+    <h2>Eigen keuzes</h2>
+    <textarea id="choices" rows="4" placeholder="pizza, sushi, patat..."></textarea>
+    <button onclick="pickRandom()">Kies</button>
+    <div class="result" id="pickResult"></div>
+  </div>
+
+  <script>
+    function rollOne() {
+      const n = Math.floor(Math.random() * 6) + 1;
+      document.getElementById("dice1").textContent = n;
+      document.getElementById("res1").textContent = "Het is " + n;
+    }
+
+    function rollTwo() {
+      const a = Math.floor(Math.random() * 6) + 1;
+      const b = Math.floor(Math.random() * 6) + 1;
+      document.getElementById("dice2a").textContent = a;
+      document.getElementById("dice2b").textContent = b;
+      document.getElementById("res2").textContent = "Totaal: " + (a + b);
+    }
+
+    function rollSix() {
+      let html = "";
+      let total = 0;
+      for (let i = 0; i < 6; i++) {
+        const n = Math.floor(Math.random() * 6) + 1;
+        html += `<span class="dice">${n}</span>`;
+        total += n;
+      }
+      document.getElementById("dice6").innerHTML = html;
+      document.getElementById("res6").textContent = "Totaal: " + total;
+    }
+
+    function spinWheel() {
+      const wheel = document.getElementById("wheel");
+      const spin = Math.floor(Math.random() * 360) + 720;
+      wheel.style.transform = "rotate(" + spin + "deg)";
+      const sector = ((spin % 360) / 60) | 0;
+      const labels = ["Rood", "Groen", "Blauw", "Geel", "Roze", "Cyaan"];
+      setTimeout(() => {
+        document.getElementById("wheelResult").textContent = labels[sector];
+      }, 3000);
+    }
+
+    function flipCoin() {
+      const r = Math.random() < 0.5 ? "Kop" : "Munt";
+      document.getElementById("coinResult").textContent = r;
+    }
+
+    function drawCard() {
+      const values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+      const suits = ["♠", "♥", "♦", "♣"];
+      const card = values[Math.floor(Math.random() * values.length)] +
+                   suits[Math.floor(Math.random() * suits.length)];
+      document.getElementById("cardResult").textContent = card;
+    }
+
+    function randomColor() {
+      const c = "#" + Math.floor(Math.random() * 16777215).toString(16);
+      document.getElementById("colorResult").textContent = c;
+    }
+
+    function randomNumber() {
+      const n = Math.floor(Math.random() * 100) + 1;
+      document.getElementById("numResult").textContent = n;
+    }
+
+    function randomRange() {
+      const min = parseInt(document.getElementById("min").value);
+      const max = parseInt(document.getElementById("max").value);
+      if (isNaN(min) || isNaN(max) || min > max) {
+        document.getElementById("rangeResult").textContent = "Ongeldige waarden";
+        return;
+      }
+      const n = Math.floor(Math.random() * (max - min + 1)) + min;
+      document.getElementById("rangeResult").textContent = n;
+    }
+
+    function randomWord() {
+      const words = ["boom", "auto", "pizza", "game", "kat", "vuur", "regen", "licht", "code", "beat"];
+      const w = words[Math.floor(Math.random() * words.length)];
+      document.getElementById("wordResult").textContent = w;
+    }
+
+    function randomEmoji() {
+      const emojis = ["😀","😂","😎","🔥","🎉","🎵","💀","🤖","🐱","🍕","⚡","🌈"];
+      const e = emojis[Math.floor(Math.random() * emojis.length)];
+      document.getElementById("emojiResult").textContent = e;
+    }
+
+    function pickRandom() {
+      const raw = document.getElementById("choices").value;
+      const list = raw.split(",").map(x => x.trim()).filter(x => x.length > 0);
+      if (list.length === 0) {
+        document.getElementById("pickResult").textContent = "Voer opties in.";
+        return;
+      }
+      const keuze = list[Math.floor(Math.random() * list.length)];
+      document.getElementById("pickResult").textContent = keuze;
+    }
+  </script>
+
+</body>
+</html>
